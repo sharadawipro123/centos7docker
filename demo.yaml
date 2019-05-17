@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: democicd
 spec:
-  replicas: 3
+  replicas: 20
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -24,6 +24,14 @@ spec:
             cpu: 250m
           limits:
             cpu: 500m
+        volumeMounts:
+         - mountPath: "/mnt/azure"
+           name: volume
+      volumes:
+        - name: volume
+          persistentVolumeClaim:
+            claimName: azure-managed-disk
+
 
 ---
 apiVersion: v1
