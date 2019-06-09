@@ -1,9 +1,9 @@
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: democicd
+  name: testcicd
 spec:
-  replicas: 20
+  replicas: 2
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -12,11 +12,11 @@ spec:
   template:
     metadata:
       labels:
-        app: democicd
+        app: testcicd
     spec:
       containers:
       - name: httpd
-        image: agawande/httpd:latest
+        image: sharadagaikwad/centos7docker:v2
         ports:
         - containerPort: 80
         resources:
@@ -24,23 +24,14 @@ spec:
             cpu: 250m
           limits:
             cpu: 500m
-        volumeMounts:
-         - mountPath: "/mnt/azure"
-           name: volume
-      volumes:
-        - name: volume
-          persistentVolumeClaim:
-            claimName: azure-managed-disk
-
-
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: democicd
+  name: testcicd
 spec:
   type: LoadBalancer
   ports:
   - port: 80
   selector:
-    app: democicd
+    app: testcicd
